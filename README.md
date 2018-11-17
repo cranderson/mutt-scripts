@@ -14,7 +14,7 @@ In .muttmailcap:
 
     text/plain; /path/to/stripsafelinks.pl %{charset}; copiousoutput
     text/html; /path/to/striphtmlsafelinks.pl %{charset}; copiousoutput
-    text/calendar; /home/cra/bin/vcalendar-filter; copiousoutput
+    text/calendar; /path/to/vcalendar-filter; copiousoutput
 
 However, I've since abandoned the HTML::Strip striphtmlsafelinks.pl script
 in favor of w3m instead.  I still use stripsafelinks.pl with w3m as follows:
