@@ -13,7 +13,8 @@ my $charset = $ARGV[0];
 
 # Have perl convert all STDIN input from the given encoding
 # to UTF-8 and also output to STDOUT as UTF-8.
-use encoding 'UTF-8', STDIN => $charset, STDOUT => 'UTF-8';
+binmode \*STDIN, ":encoding($charset)";
+binmode \*STDOUT, ':encoding(UTF-8)';
 
 #use HTML::FormatText;
 use HTML::Strip;
