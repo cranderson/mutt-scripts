@@ -1,10 +1,23 @@
 #!/usr/bin/perl -w
-#use HTML::Strip;
-#use HTML::LinkExtor;
+# Extract and output the real URL from all Microsoft "safelinks".
+#
+# Call from mailcap like this:
+# text/plain; /path/to/stripsafelinks.pl %{charset}; copiousoutput
+
+# Have perl treat strings as Unicode internally
+use feature 'unicode_strings';
+
+# Mutt passes the encoding of the email as the first argument
+my $charset = $ARGV[0];
+
+# Have perl convert all STDIN input from the given encoding
+# to UTF-8 and also output to STDOUT as UTF-8.
+use encoding 'UTF-8', STDIN => $charset, STDOUT => 'UTF-8';
+
 use HTML::Entities qw/decode_entities/;
 use URI::Escape qw/uri_unescape/;
-#use Encode qw/from_to/;
 
+# Recursive function to strip safelinks
 sub strip_safelinks($) {
 	my $input_text = shift;
 	my $output_text;
@@ -26,12 +39,12 @@ sub strip_safelinks($) {
 	return $output_text;
 }
 
+# Suck in entire text email at once
 undef $/;
-my $input_text = <ARGV>;
+my $input_text = <STDIN>;
+
+# Decode HTML entities, convert DOS to Unix line endings,
+# and strip the safelinks.
 my $decoded_text = decode_entities($input_text);
 $decoded_text =~ s/\r\n/\n/g;
-#$decoded_text =~ s/\222/'/g;
-#$decoded_text =~ s/\226/-/g;
-#$decoded_text =~ s/\240/ /g;
-#$decoded_text =~ s/\302/ /g;
 print strip_safelinks($decoded_text);
